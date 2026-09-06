@@ -3,116 +3,126 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#1d7f88">
+<meta name="theme-color" content="#f15b22">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>MAUVILLE SLOT STUDY v0.1</title>
-<link rel="stylesheet" href="style.css">
+<title>KINSETSU GAME CORNER v0.3</title>
+<style>
+:root{--orange:#f36a20;--orange2:#ff9b24;--navy:#08264f;--blue:#176ac0;--cream:#fff9df;--red:#ef313d;--gold:#ffd447;--ink:#171717}
+*{box-sizing:border-box}html,body{margin:0;background:#07111d;color:#111;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Hiragino Kaku Gothic ProN",monospace;touch-action:manipulation}
+body{min-height:100dvh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);overflow-x:hidden}
+button{font:inherit;-webkit-tap-highlight-color:transparent}
+.game{width:min(1180px,100%);margin:auto;background:linear-gradient(90deg,#e6401d,#ff8425 7%,#ff6b1e 93%,#e6401d);border:5px solid #7d2615;box-shadow:inset 0 0 0 5px #ffb32c;min-height:100dvh}
+.marquee{position:relative;background:linear-gradient(#0d70d2,#073a91);color:white;text-align:center;padding:8px 74px;border-bottom:6px solid #c6311d;box-shadow:inset 0 -5px #ff8b21}
+.marquee h1{margin:0;font-size:clamp(28px,6vw,62px);line-height:.95;color:#fff;text-shadow:4px 4px 0 #e13223,-3px -3px 0 #e13223,0 7px 0 #9c1d1c;letter-spacing:.03em}
+.marquee b{font-size:clamp(15px,3vw,30px);letter-spacing:.12em;text-shadow:3px 3px 0 #123b83}
+.ball{position:absolute;top:12px;width:48px;height:48px;border:5px solid #111;border-radius:50%;background:linear-gradient(#ef3440 0 45%,#111 45% 56%,#fff 56%);box-shadow:inset 0 0 0 3px #fff}.ball:after{content:"";position:absolute;left:50%;top:50%;width:13px;height:13px;background:white;border:4px solid #111;border-radius:50%;transform:translate(-50%,-50%)}.ball.l{left:18px}.ball.r{right:18px}
+.main{display:grid;grid-template-columns:270px minmax(390px,1fr) 230px;gap:10px;padding:12px;background:linear-gradient(135deg,#ff7a21,#f04b1f)}
+.panel{background:#fffdf0;border:6px solid #0d4d9d;box-shadow:inset 0 0 0 3px #62a5ed,4px 4px 0 #7d2b1c;border-radius:8px}
+.paytable{padding:10px}.paytable h2,.reelmap h2{margin:0 0 8px;font-size:22px}.payrow{display:grid;grid-template-columns:110px 1fr 48px;align-items:center;min-height:48px;font-weight:900}.payrow .mini-icons{display:flex;gap:2px;align-items:center}.payrow .txt{font-size:13px}.payrow strong{font-size:24px;text-align:right}
+.machine{min-width:0}.counters{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 auto 10px;max-width:500px}.counter{background:#08120f;border:5px solid #f0a42a;box-shadow:inset 0 0 0 3px #663214;color:white;text-align:center;padding:5px}.counter span{display:block;font-size:17px}.counter b{display:block;color:#ff542e;font-size:40px;letter-spacing:.06em}
+.reelbox{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;background:#6b3a18;border:8px solid #e99a25;box-shadow:inset 0 0 0 4px #7b3c16;padding:7px;height:405px;overflow:hidden}
+.reelwin{overflow:hidden;position:relative;background:linear-gradient(90deg,#b99e6a,#fffde9 15%,#fff 50%,#f7e8b9 85%,#a88b59);border:4px solid #3b2b21;box-shadow:inset 0 0 18px #80662b80}
+.strip{position:absolute;left:0;right:0;top:0;will-change:transform}.cell{height:130px;display:grid;place-items:center;border-bottom:2px solid #bda777}.cell svg{width:88px;height:88px;filter:drop-shadow(2px 3px 0 #73512b55)}
+.line{position:absolute;left:7px;right:7px;top:50%;height:3px;background:#ef3d36;z-index:4;pointer-events:none;box-shadow:0 0 8px #fff}
+.stoplabels,.stops{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center}.stoplabels{margin-top:6px;color:white;font-size:20px;font-weight:1000;text-shadow:3px 3px #141414}.stops{padding:4px 28px 8px}.stop{width:76px;height:76px;margin:auto;border-radius:50%;border:7px solid #711d16;background:radial-gradient(circle at 35% 25%,#ff9a91 0 8%,#f52e3e 9% 52%,#bd1725 53% 100%);box-shadow:0 7px 0 #5d2419,inset 0 0 0 4px #ff5b62}.stop:active,.stop.on{transform:translateY(5px);box-shadow:0 2px 0 #5d2419}.stop:disabled{filter:grayscale(.7);opacity:.55}
+.bottom{display:grid;grid-template-columns:1fr 220px;gap:12px;padding:0 12px 14px}.message{background:#fffdf1;border:6px solid #0d4d9d;box-shadow:inset 0 0 0 3px #65a9f1;padding:18px;font-size:clamp(15px,2.5vw,26px);min-height:105px;display:flex;align-items:center}.controls{display:grid;grid-template-columns:1fr;gap:8px}.betbox{background:#08264f;color:white;border:5px solid #111;padding:7px;display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;text-align:center}.betbox b{grid-column:1/-1;font-size:18px}.betbox span{font-size:30px;color:#ff3341}.betbox button{border:0;background:none;color:#ffb32b;font-size:32px}.start{min-height:70px;border:6px solid #9b5d12;border-radius:28px;background:linear-gradient(#fff6a5,#ffd64b);font-size:28px;font-weight:1000;color:#172139;box-shadow:0 5px 0 #6f3c10}.start:disabled{filter:grayscale(.7);opacity:.6}
+.reelmap{padding:8px;background:#0a2b59;color:white}.maphead{display:grid;grid-template-columns:26px repeat(3,1fr);font-weight:900;text-align:center}.maprows{display:grid;gap:1px}.maprow{display:grid;grid-template-columns:26px repeat(3,1fr);align-items:center;text-align:center;min-height:25px;background:#f5f5e9;color:#111;font-size:11px}.maprow>span:first-child{background:#0a2b59;color:white;height:100%;display:grid;place-items:center}.tiny{display:grid;place-items:center;height:24px}.tiny svg{width:24px;height:24px}
+.flash{animation:flash .22s 8}@keyframes flash{50%{filter:brightness(1.55) saturate(1.5)}}.wintext{color:#d7192d;font-weight:1000}
+@media(max-width:850px){
+ .game{border-width:0}.marquee{padding:8px 55px}.ball{width:38px;height:38px}.main{grid-template-columns:1fr;padding:7px}.paytable,.reelmap{display:none}.counters{max-width:420px}.reelbox{height:335px}.cell{height:106px}.stop{width:64px;height:64px}.bottom{grid-template-columns:1fr 145px;padding:0 7px 10px}.message{min-height:88px;padding:12px}.betbox{grid-template-columns:1fr 38px 1fr}.start{min-height:60px;font-size:23px}
+}
+@media(max-width:430px){.marquee h1{font-size:29px}.marquee b{font-size:14px}.counters{gap:8px}.counter b{font-size:29px}.reelbox{height:300px;padding:4px;gap:4px;border-width:5px}.cell{height:95px}.cell svg{width:70px;height:70px}.stoplabels{font-size:15px}.stops{padding:2px 15px 7px}.stop{width:56px;height:56px;border-width:5px}.bottom{grid-template-columns:1fr 120px;gap:6px}.message{font-size:13px}.start{font-size:19px}}
+</style>
 </head>
 <body>
-<div class="app">
-  <header class="topbar">
-    <div class="title-wrap">
-      <div class="mini">HOENN SLOT STUDY</div>
-      <h1>キンセツ・スロット <small>v0.1</small></h1>
-    </div>
-    <button id="helpBtn" class="header-btn">?</button>
-  </header>
-
-  <main class="cabinet">
-    <section class="status-panel">
-      <div class="status-box"><span>CREDIT</span><b id="credit">0500</b></div>
-      <div class="status-box"><span>PAYOUT</span><b id="payout">0000</b></div>
-      <div class="status-box"><span>BET</span><b id="bet">03</b></div>
-    </section>
-
-    <section class="power-row">
-      <span class="power-label">⚡ POWER</span>
-      <div id="powerGauge" class="power-gauge"></div>
-      <span id="powerNum" class="power-num">0/16</span>
-    </section>
-
-    <section id="slotArea" class="slot-area">
-      <div class="paylines left-lines">
-        <span class="p3">3</span><span class="p2">2</span><span class="p1">1</span><span class="p2">2</span><span class="p3">3</span>
-      </div>
-
-      <div class="reels-frame">
-        <div class="winning-line line-top"></div>
-        <div class="winning-line line-mid"></div>
-        <div class="winning-line line-bot"></div>
-
-        <div class="reel-window"><div id="reel0" class="reel-strip"></div></div>
-        <div class="reel-window"><div id="reel1" class="reel-strip"></div></div>
-        <div class="reel-window"><div id="reel2" class="reel-strip"></div></div>
-      </div>
-
-      <div class="paylines right-lines">
-        <span class="p3">3</span><span class="p2">2</span><span class="p1">1</span><span class="p2">2</span><span class="p3">3</span>
-      </div>
-    </section>
-
-    <section class="stop-row">
-      <button class="stop-btn" data-stop="0">STOP<br><span>LEFT</span></button>
-      <button class="stop-btn" data-stop="1">STOP<br><span>CENTER</span></button>
-      <button class="stop-btn" data-stop="2">STOP<br><span>RIGHT</span></button>
-    </section>
-
-    <section class="controls">
-      <button id="spinBtn" class="spin-btn">SPIN</button>
-      <button id="autoBtn" class="sub-btn">AUTO STOP</button>
-    </section>
-
-    <section id="message" class="message-box">
-      3コインBET。SPINでスタート！
-    </section>
-
-    <section class="bd-panel">
-      <div class="bd-head">
-        <b>BD TIME</b>
-        <span id="bdRemain">0 GAME</span>
-      </div>
-      <div id="bdRoulette" class="bd-roulette">
-        <div class="pika-orb">⚡</div>
-        <div class="bd-numbers">
-          <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="legend">
-      <h2>役・配当</h2>
-      <div class="legend-grid">
-        <div><i class="symbol-sm red7">7</i><span>赤777 / 青777</span><b>300</b></div>
-        <div><i class="symbol-sm blue7">7</i><span>赤赤青 / 青青赤</span><b>90</b></div>
-        <div><i class="symbol-sm azu">●</i><span>ルリリ役</span><b>12</b></div>
-        <div><i class="symbol-sm lotad">●</i><span>ハスボー役</span><b>6</b></div>
-        <div><i class="symbol-sm cherry">●</i><span>チェリー</span><b>2</b></div>
-        <div><i class="symbol-sm replay">↻</i><span>REPLAY</span><b>4+</b></div>
-        <div><i class="symbol-sm power">⚡</i><span>POWER</span><b>3+</b></div>
-      </div>
-    </section>
-  
-    <section class="reference-note">
-      <b>REFERENCE v0.2</b>
-      <span>リール配列：提供画像の1〜21番を3リールとも反映</span>
-      <span>BIG 300 / REG 90 / ルリリ 12 / ハスボー 6 / チェリー 2 / REPLAY / POWER 3+1</span>
-    </section>
-
-  </main>
+<div class="game">
+<header class="marquee"><i class="ball l"></i><h1>KINSETSU</h1><b>GAME CORNER</b><i class="ball r"></i></header>
+<section class="main">
+<aside class="panel paytable">
+<h2>あたりやく</h2>
+<div id="payRows"></div>
+</aside>
+<main class="machine">
+<div class="counters"><div class="counter"><span>CREDIT</span><b id="credit">0500</b></div><div class="counter"><span>PAYOUT</span><b id="payout">0000</b></div></div>
+<div id="reelbox" class="reelbox"><div class="line"></div><div class="reelwin"><div id="r0" class="strip"></div></div><div class="reelwin"><div id="r1" class="strip"></div></div><div class="reelwin"><div id="r2" class="strip"></div></div></div>
+<div class="stoplabels"><span>STOP</span><span>STOP</span><span>STOP</span></div>
+<div class="stops"><button class="stop" data-i="0"></button><button class="stop" data-i="1"></button><button class="stop" data-i="2"></button></div>
+</main>
+<aside class="panel reelmap"><h2>リールのはいれつ</h2><div class="maphead"><span></span><span>L</span><span>C</span><span>R</span></div><div id="mapRows" class="maprows"></div></aside>
+</section>
+<section class="bottom">
+<div id="msg" class="message">コインを 3まい いれて<br>スタートボタンを おしてください！</div>
+<div class="controls"><div class="betbox"><b>BET</b><button id="minus">◀</button><span id="bet">3</span><button id="plus">▶</button></div><button id="start" class="start">START</button></div>
+</section>
 </div>
-
-<div id="helpModal" class="modal hidden">
-  <div class="sheet">
-    <button id="closeHelp" class="close">×</button>
-    <h2>遊び方</h2>
-    <p>通常は3コインBET。SPIN後、LEFT → CENTER → RIGHTのSTOPを押してリールを止めます。</p>
-    <p>同色の7が揃うとBIG 300枚。右だけ色違いの7はREG 90枚。POWER役でゲージが増えます。</p>
-    <p>ときどき⚡イベントが発生し、POWERが多いほどBD TIMEの大きい数字を引きやすくなります。BD中はリールが少し遅くなり、当たりを狙いやすくなります。</p>
-    <p class="note">※ 学習用試作。ゲーム画像やROM素材は使用せず、UIと絵柄は新規実装しています。</p>
-  </div>
-</div>
-
-<script src="app.js"></script>
-</body>
-</html>
+<script>
+const S={R7:"R7",B7:"B7",CH:"CH",BLUE:"BLUE",GREEN:"GREEN",REP:"REP",POW:"POW"};
+const reels=[
+["BLUE","GREEN","REP","POW","CH","R7","GREEN","BLUE","REP","POW","B7","CH","GREEN","REP","BLUE","R7","POW","GREEN","REP","CH","R7"],
+["CH","REP","GREEN","BLUE","POW","CH","B7","GREEN","REP","R7","BLUE","CH","POW","GREEN","REP","BLUE","R7","CH","GREEN","REP","R7"],
+["CH","GREEN","POW","REP","BLUE","GREEN","CH","POW","REP","B7","GREEN","BLUE","R7","REP","POW","GREEN","CH","BLUE","REP","GREEN","R7"]
+];
+const $=q=>document.querySelector(q), $$=q=>[...document.querySelectorAll(q)];
+let credit=500,payout=0,bet=3,spinning=false,stopped=[true,true,true],raf=[0,0,0],pos=[45,48,51],outcome=null;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms)), pick=a=>a[Math.floor(Math.random()*a.length)];
+function svg(sym){
+ if(sym==="R7"||sym==="B7"){let c=sym==="R7"?"#ef313d":"#216bd0";return `<svg viewBox="0 0 100 100"><path d="M18 18h66v18L52 86H28l33-50H18z" fill="${c}" stroke="#222" stroke-width="7"/><path d="M27 27h43" stroke="#fff" stroke-width="6"/></svg>`}
+ if(sym==="CH")return `<svg viewBox="0 0 100 100"><path d="M50 44Q53 17 75 12" fill="none" stroke="#25833c" stroke-width="8"/><path d="M53 31Q72 19 83 30Q66 42 53 31" fill="#47a73f" stroke="#174f28" stroke-width="5"/><circle cx="35" cy="61" r="22" fill="#ed3238" stroke="#5b1719" stroke-width="6"/><circle cx="65" cy="65" r="22" fill="#d9232c" stroke="#5b1719" stroke-width="6"/><circle cx="28" cy="53" r="6" fill="#ff9c9c"/></svg>`;
+ if(sym==="BLUE")return `<svg viewBox="0 0 100 100"><circle cx="35" cy="58" r="27" fill="#3293dc" stroke="#173a78" stroke-width="6"/><circle cx="72" cy="39" r="18" fill="#287ac6" stroke="#173a78" stroke-width="6"/><path d="M53 49Q61 43 65 42" stroke="#173a78" stroke-width="6"/><circle cx="27" cy="51" r="5" fill="#fff"/><circle cx="45" cy="64" r="5" fill="#174d8c"/></svg>`;
+ if(sym==="GREEN")return `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="39" rx="38" ry="22" fill="#53bf37" stroke="#194b25" stroke-width="7"/><path d="M18 39Q50 8 82 39Q55 51 18 39" fill="#79d84c"/><rect x="32" y="52" width="36" height="24" rx="12" fill="#4a8b35" stroke="#194b25" stroke-width="6"/><circle cx="35" cy="78" r="8" fill="#e8b132"/><circle cx="65" cy="78" r="8" fill="#e8b132"/></svg>`;
+ if(sym==="REP")return `<svg viewBox="0 0 100 100"><path d="M16 36h68l10 14-10 14H16L6 50z" fill="#d8d5c7" stroke="#8d6a36" stroke-width="6"/><text x="50" y="57" text-anchor="middle" font-size="20" font-weight="900" fill="#555">REPLAY</text></svg>`;
+ return `<svg viewBox="0 0 100 100"><path d="M25 14l25 18 25-18-14 31 19 11-29 8 7 24-21-19-18 18 7-29-20-10 28-7z" fill="#222"/><path d="M47 28l18 10-13 9 8 8-18 5 5 13-18-13 12-10-10-9z" fill="#ffd51e"/></svg>`;
+}
+function label(sym){return {R7:"7",B7:"7",CH:"🍒",BLUE:"●",GREEN:"●",REP:"R",POW:"⚡"}[sym]}
+function cell(sym){return `<div class="cell">${svg(sym)}</div>`}
+function build(){
+ reels.forEach((r,i)=>{$("#r"+i).innerHTML=Array(5).fill(r).flat().map(cell).join("")});
+ const rows=[
+  [["R7","R7","R7"],"BIG BONUS","300"],[["B7","B7","B7"],"BIG BONUS","300"],
+  [["R7","R7","B7"],"REG BONUS","90"],[["B7","B7","R7"],"REG BONUS","90"],
+  [["BLUE","BLUE","BLUE"],"","12"],[["GREEN","GREEN","GREEN"],"","6"],[["CH"],"","2"],[["REP","REP","REP"],"REPLAY",""],[["POW","POW","POW"],"POWER+1","3"]
+ ];
+ $("#payRows").innerHTML=rows.map(x=>`<div class="payrow"><div class="mini-icons">${x[0].map(s=>`<span style="width:34px;height:34px;display:inline-grid">${svg(s)}</span>`).join("")}</div><span class="txt">${x[1]}</span><strong>${x[2]}</strong></div>`).join("");
+ $("#mapRows").innerHTML=Array.from({length:21},(_,k)=>{let n=20-k;return `<div class="maprow"><span>${n+1}</span>${reels.map(r=>`<span class="tiny">${svg(r[n])}</span>`).join("")}</div>`}).join("");
+ pos.forEach((p,i)=>setPos(i,p,false));
+ render();
+}
+function h(){return $("#r0 .cell")?.getBoundingClientRect().height||130}
+function setPos(i,p,anim=true,dur=500){let el=$("#r"+i);el.style.transition=anim?`transform ${dur}ms cubic-bezier(.12,.72,.08,1)`:"none";el.style.transform=`translate3d(0,${-(p*h()-h())}px,0)`}
+function render(){$("#credit").textContent=String(credit).padStart(4,"0");$("#payout").textContent=String(payout).padStart(4,"0");$("#bet").textContent=bet}
+function choose(){
+ let r=Math.random();
+ if(r<.06){let s=Math.random()<.5?"R7":"B7";return {t:"BIG",s:[s,s,s],p:300}}
+ if(r<.12)return {t:"REG",s:Math.random()<.5?["R7","R7","B7"]:["B7","B7","R7"],p:90};
+ if(r<.22)return {t:"BLUE",s:["BLUE","BLUE","BLUE"],p:12};
+ if(r<.34)return {t:"GREEN",s:["GREEN","GREEN","GREEN"],p:6};
+ if(r<.46)return {t:"REP",s:["REP","REP","REP"],p:0,replay:true};
+ if(r<.57)return {t:"POW",s:["POW","POW","POW"],p:3};
+ if(r<.68)return {t:"CH",s:["CH",pick(reels[1]),pick(reels[2])],p:2};
+ let s=[pick(reels[0]),pick(reels[1]),pick(reels[2])]; if(s[0]===s[1]&&s[1]===s[2])s[2]="CH"; return {t:"MISS",s,p:0};
+}
+function target(i,sym){let ids=[];reels[i].forEach((x,j)=>x===sym&&ids.push(j));return 3*reels[i].length+pick(ids)}
+function spinVisual(i){let el=$("#r"+i),y=pos[i]*h(),last=performance.now();el.style.transition="none";function f(now){if(stopped[i])return;let dt=Math.min(35,now-last);last=now;y+=h()*.62*(dt/16);let loop=reels[i].length*h();if(y>loop*4)y-=loop;el.style.transform=`translate3d(0,${-(y-h())}px,0)`;raf[i]=requestAnimationFrame(f)}raf[i]=requestAnimationFrame(f)}
+async function start(){
+ if(spinning||credit<bet)return;
+ credit-=bet;payout=0;spinning=true;stopped=[false,false,false];outcome=choose();render();$("#start").disabled=true;$$(".stop").forEach(b=>b.disabled=false);$("#msg").textContent="リール回転中！ STOPボタンで左から止めよう！";[0,1,2].forEach(spinVisual);
+ setTimeout(()=>!stopped[0]&&stop(0),5000);setTimeout(()=>!stopped[1]&&stop(1),5700);setTimeout(()=>!stopped[2]&&stop(2),6400)
+}
+function stop(i){
+ if(!spinning||stopped[i])return;if(i>0&&!stopped[i-1]){$("#msg").textContent="左のリールから順番にSTOP！";return}
+ stopped[i]=true;cancelAnimationFrame(raf[i]);pos[i]=target(i,outcome.s[i]);setPos(i,pos[i],true,480);let b=$(`.stop[data-i="${i}"]`);b.classList.add("on");setTimeout(()=>b.classList.remove("on"),180);
+ if(stopped.every(Boolean))setTimeout(resolve,560)
+}
+async function resolve(){
+ spinning=false;$$(".stop").forEach(b=>b.disabled=true);$("#start").disabled=false;payout=outcome.p;credit+=payout;render();
+ let text=outcome.t==="BIG"?"BIG BONUS！ 777！ +300":outcome.t==="REG"?"REG BONUS！ +90":outcome.t==="BLUE"?"青いポケモン役！ +12":outcome.t==="GREEN"?"みどりのポケモン役！ +6":outcome.t==="REP"?"REPLAY！ もう一回！":outcome.t==="POW"?"POWER！ +3 / POWER+1":outcome.t==="CH"?"チェリー！ +2":"はずれ。次のゲームへ！";
+ $("#msg").innerHTML=`<span class="${outcome.p||outcome.replay?"wintext":""}">${text}</span>`;if(outcome.p||outcome.replay)$("#reelbox").classList.add("flash");setTimeout(()=>$("#reelbox").classList.remove("flash"),1900);
+ if(outcome.replay){await sleep(1000);start()}
+}
+$("#start").onclick=start;$$(".stop").forEach(b=>b.onclick=()=>stop(+b.dataset.i));
+$("#minus").onclick=()=>{if(!spinning){bet=Math.max(1,bet-1);render()}};$("#plus").onclick=()=>{if(!spinning){bet=Math.min(3,bet+1);render()}};
+window.addEventListener("resize",()=>pos.forEach((p,i)=>setPos(i,p,false)));
+build();$$(".stop").forEach(b=>b.disabled=true);
+</script>
+</body></html>
