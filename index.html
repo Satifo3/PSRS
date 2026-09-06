@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#091327">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>KINSETSU GAME CORNER v0.6</title>
+<title>KINSETSU GAME CORNER v0.8</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:#050914;overflow-x:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Hiragino Kaku Gothic ProN",monospace}
@@ -97,7 +97,7 @@ body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 }
 
 
-/* v0.6 — pixel-measured reel alignment from the reference image (1382×1138) */
+/* v0.8 — pixel-measured reel alignment from the reference image (1382×1138) */
 .reel{
   top:30.228471%!important;
   height:34.622144%!important;
@@ -120,6 +120,91 @@ body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
   object-fit:contain!important;
   object-position:50% 50%!important;
   overflow:visible!important;
+}
+
+
+/* v0.8 — iPhone full-height layout + larger reel symbols */
+html,body{width:100%;height:100%;min-height:100%;}
+body{padding:0!important;overscroll-behavior:none;}
+.app{max-width:none!important;}
+.cell{padding:1%!important;}
+.cell img{width:94%!important;height:94%!important;max-width:94%!important;max-height:94%!important;}
+@media (orientation:portrait){
+  .app{width:100vw!important;height:100dvh!important;margin:0!important;}
+  .stage{
+    width:100vw!important;
+    height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important;
+    margin-top:env(safe-area-inset-top)!important;
+    aspect-ratio:auto!important;
+  }
+  .skin{width:100%!important;height:100%!important;object-fit:fill!important;}
+  .cell img{width:96%!important;height:96%!important;max-width:96%!important;max-height:96%!important;}
+}
+
+
+/* ===== v0.8 LANDSCAPE-FIRST ===== */
+html,body{
+  width:100%;
+  height:100%;
+  margin:0;
+  overflow:hidden;
+  background:#050914;
+}
+body{padding:0!important;}
+.app{
+  width:100vw!important;
+  height:100dvh!important;
+  max-width:none!important;
+  margin:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.stage{
+  width:min(
+    calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right)),
+    calc((100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 1382 / 1138)
+  )!important;
+  height:min(
+    calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)),
+    calc((100vw - env(safe-area-inset-left) - env(safe-area-inset-right)) * 1138 / 1382)
+  )!important;
+  aspect-ratio:1382/1138!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:auto!important;
+  flex:none!important;
+  transform:none!important;
+}
+.portrait-lock{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:#050914;
+  color:#fff;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:30px;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif;
+}
+.portrait-lock .inner{max-width:320px}
+.portrait-lock .phone{
+  font-size:58px;
+  display:block;
+  margin-bottom:14px;
+  transform:rotate(90deg);
+}
+.portrait-lock b{display:block;font-size:22px;margin-bottom:8px}
+.portrait-lock p{margin:0;color:#aeb7c8;line-height:1.6;font-size:14px}
+@media (orientation:portrait){
+  .app{visibility:hidden!important}
+  .portrait-lock{display:flex!important}
+}
+@media (orientation:landscape){
+  .app{visibility:visible!important}
+  .portrait-lock{display:none!important}
 }
 
 </style>
@@ -261,6 +346,20 @@ $("#betMinus").addEventListener("click",()=>{if(!spinning){bet=Math.max(1,bet-1)
 $("#betPlus").addEventListener("click",()=>{if(!spinning){bet=Math.min(3,bet+1);render()}});
 window.addEventListener("resize",()=>pos.forEach((p,i)=>setPos(i,p,false)));
 build();
+
+window.addEventListener("orientationchange",()=>{
+  setTimeout(()=>pos.forEach((p,i)=>setPos(i,p,false)),250);
+});
+
 </script>
+
+<div class="portrait-lock">
+  <div class="inner">
+    <span class="phone">📱</span>
+    <b>iPhoneを横向きにしてください</b>
+    <p>このスロットは横画面専用です。<br>横向きにすると元のゲーム画面比率のまま全画面表示されます。</p>
+  </div>
+</div>
+
 </body>
 </html>
