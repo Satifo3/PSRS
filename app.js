@@ -1,9 +1,21 @@
 
-const SYMBOLS=["R7","B7","AZU","SEED","CHERRY","REPLAY","POWER"];
+const SYMBOLS=["R7","B7","AZU","LOTAD","CHERRY","REPLAY","POWER"];
+
+/* v0.2 — 参考画像の右端にある 1〜21 配列をそのまま転記。
+   1番が配列の先頭、21番が末尾。 */
 const reelOrders=[
-  ["CHERRY","R7","SEED","REPLAY","AZU","POWER","B7","SEED","CHERRY","AZU","REPLAY","POWER","R7","SEED","AZU","B7","CHERRY","REPLAY","POWER","AZU"],
-  ["SEED","AZU","R7","POWER","CHERRY","REPLAY","B7","AZU","SEED","POWER","CHERRY","R7","REPLAY","AZU","B7","SEED","POWER","CHERRY","AZU","REPLAY"],
-  ["POWER","CHERRY","B7","AZU","REPLAY","SEED","R7","CHERRY","POWER","AZU","SEED","REPLAY","B7","POWER","CHERRY","R7","AZU","SEED","REPLAY","POWER"]
+  [
+    "AZU","REPLAY","POWER","CHERRY","LOTAD","B7","LOTAD","POWER","REPLAY","AZU",
+    "CHERRY","R7","REPLAY","LOTAD","POWER","B7","AZU","REPLAY","LOTAD","POWER","R7"
+  ],
+  [
+    "CHERRY","REPLAY","LOTAD","CHERRY","REPLAY","LOTAD","AZU","CHERRY","REPLAY","LOTAD",
+    "B7","LOTAD","POWER","POWER","REPLAY","CHERRY","AZU","LOTAD","REPLAY","CHERRY","R7"
+  ],
+  [
+    "CHERRY","LOTAD","REPLAY","POWER","AZU","LOTAD","REPLAY","POWER","AZU","LOTAD",
+    "REPLAY","AZU","POWER","LOTAD","REPLAY","AZU","LOTAD","REPLAY","B7","POWER","R7"
+  ]
 ];
 const CELL=104;
 let credit=500,payout=0,power=0,bd=0;
@@ -16,14 +28,76 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
 function art(sym){
-  if(sym==="R7")return `<div class="symbol"><div class="s7">7</div></div>`;
-  if(sym==="B7")return `<div class="symbol"><div class="s7 blue">7</div></div>`;
-  if(sym==="AZU")return `<div class="symbol azurill"><span class="txt">AZU</span></div>`;
-  if(sym==="SEED")return `<div class="symbol"><div class="seed-art"></div></div>`;
-  if(sym==="CHERRY")return `<div class="symbol"><div class="cherry-art"><i></i></div></div>`;
-  if(sym==="REPLAY")return `<div class="symbol"><div class="replay-art">REPLAY</div></div>`;
-  return `<div class="symbol power-art">⚡</div>`;
+  if(sym==="R7")return `
+    <svg class="slot-svg seven-svg" viewBox="0 0 100 78" aria-label="赤7">
+      <defs>
+        <linearGradient id="r7g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff8b32"/><stop offset=".42" stop-color="#f04a23"/>
+          <stop offset="1" stop-color="#c91b20"/>
+        </linearGradient>
+      </defs>
+      <path d="M12 14 H88 L81 31 H61 L38 66 H16 L42 31 H12 Z"
+            fill="url(#r7g)" stroke="#6b6b65" stroke-width="7" stroke-linejoin="round"/>
+      <path d="M18 19 H80" stroke="#ffd39c" stroke-width="5" opacity=".8"/>
+    </svg>`;
+  if(sym==="B7")return `
+    <svg class="slot-svg seven-svg" viewBox="0 0 100 78" aria-label="青7">
+      <defs>
+        <linearGradient id="b7g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#45a7ff"/><stop offset=".42" stop-color="#1971e5"/>
+          <stop offset="1" stop-color="#173dc4"/>
+        </linearGradient>
+      </defs>
+      <path d="M12 14 H88 L81 31 H61 L38 66 H16 L42 31 H12 Z"
+            fill="url(#b7g)" stroke="#6b6b65" stroke-width="7" stroke-linejoin="round"/>
+      <path d="M18 19 H80" stroke="#bfe3ff" stroke-width="5" opacity=".85"/>
+    </svg>`;
+  if(sym==="AZU")return `
+    <svg class="slot-svg" viewBox="0 0 100 78" aria-label="ルリリ">
+      <ellipse cx="43" cy="47" rx="26" ry="20" fill="#3389da" stroke="#31516e" stroke-width="5"/>
+      <circle cx="72" cy="35" r="17" fill="#2473ce" stroke="#31516e" stroke-width="5"/>
+      <circle cx="31" cy="31" r="10" fill="#6db8ee" stroke="#31516e" stroke-width="4"/>
+      <circle cx="48" cy="31" r="10" fill="#6db8ee" stroke="#31516e" stroke-width="4"/>
+      <circle cx="34" cy="47" r="3" fill="#13263d"/>
+      <circle cx="47" cy="47" r="3" fill="#13263d"/>
+      <path d="M37 56 Q42 60 48 55" fill="none" stroke="#173452" stroke-width="3"/>
+      <path d="M65 48 Q57 58 49 58" fill="none" stroke="#31516e" stroke-width="5"/>
+    </svg>`;
+  if(sym==="LOTAD")return `
+    <svg class="slot-svg" viewBox="0 0 100 78" aria-label="ハスボー">
+      <ellipse cx="51" cy="41" rx="31" ry="17" fill="#66a73a" stroke="#394d25" stroke-width="5"/>
+      <path d="M23 38 Q49 15 80 34 Q64 20 55 16 Q39 18 23 38Z" fill="#7ec84d" stroke="#394d25" stroke-width="4"/>
+      <path d="M48 24 Q60 30 73 31" fill="none" stroke="#aee86a" stroke-width="4"/>
+      <circle cx="41" cy="43" r="3" fill="#243018"/>
+      <circle cx="57" cy="43" r="3" fill="#243018"/>
+      <path d="M46 52 Q51 56 57 51" fill="none" stroke="#243018" stroke-width="3"/>
+      <path d="M33 58 L26 68 M67 58 L74 68" stroke="#5a4426" stroke-width="5"/>
+    </svg>`;
+  if(sym==="CHERRY")return `
+    <svg class="slot-svg" viewBox="0 0 100 78" aria-label="チェリー">
+      <path d="M47 12 Q53 28 43 39 M53 14 Q65 26 73 36" fill="none" stroke="#438231" stroke-width="7"/>
+      <path d="M52 13 Q69 3 82 13 Q69 23 54 18Z" fill="#54a93f" stroke="#355c29" stroke-width="4"/>
+      <circle cx="34" cy="51" r="18" fill="#de2d24" stroke="#7a281d" stroke-width="5"/>
+      <circle cx="67" cy="53" r="18" fill="#e53627" stroke="#7a281d" stroke-width="5"/>
+      <circle cx="29" cy="45" r="5" fill="#ff7e55"/><circle cx="62" cy="47" r="5" fill="#ff7e55"/>
+    </svg>`;
+  if(sym==="REPLAY")return `
+    <svg class="slot-svg" viewBox="0 0 100 78" aria-label="REPLAY">
+      <ellipse cx="50" cy="39" rx="37" ry="24" fill="#c6b795" stroke="#777267" stroke-width="5"/>
+      <path d="M18 39 H82" stroke="#ae752d" stroke-width="9" opacity=".75"/>
+      <text x="50" y="46" text-anchor="middle" font-size="18" font-weight="900"
+            font-family="Arial Black, sans-serif" fill="#f0eee5" stroke="#6a6965" stroke-width="1.4">REPLAY</text>
+    </svg>`;
+  return `
+    <svg class="slot-svg" viewBox="0 0 100 78" aria-label="POWER">
+      <path d="M13 29 Q27 17 39 29 L50 20 L61 29 Q74 17 87 29 L72 39 L79 54
+               Q64 50 53 62 Q40 50 24 54 L31 40Z"
+            fill="#343230" stroke="#242220" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M57 12 L39 40 H52 L43 68 L71 34 H58Z"
+            fill="#ffd829" stroke="#7b6010" stroke-width="4" stroke-linejoin="round"/>
+    </svg>`;
 }
+
 function buildReels(){
   reelOrders.forEach((arr,i)=>{
     const el=$("#reel"+i);el.innerHTML="";
@@ -59,18 +133,18 @@ function weightedOutcome(){
   const r=Math.random();
   if(bd>0){
     if(r<.09)return {type:"BIG",symbols:["R7","R7","R7"]};
-    if(r<.18)return {type:"REG",symbols:["R7","R7","B7"]};
+    if(r<.18)return {type:"REG",symbols:Math.random()<.5?["R7","R7","B7"]:["B7","B7","R7"]};
     if(r<.31)return {type:"AZU",symbols:["AZU","AZU","AZU"]};
-    if(r<.46)return {type:"SEED",symbols:["SEED","SEED","SEED"]};
+    if(r<.46)return {type:"LOTAD",symbols:["LOTAD","LOTAD","LOTAD"]};
     if(r<.58)return {type:"REPLAY",symbols:["REPLAY","REPLAY","REPLAY"]};
     if(r<.70)return {type:"POWER",symbols:["POWER","POWER","POWER"]};
     return {type:"MISS",symbols:[rnd(SYMBOLS),rnd(SYMBOLS),rnd(SYMBOLS)]};
   }
   if(r<.018)return {type:"BIG",symbols:[Math.random()<.5?"R7":"B7",null,null],same7:true};
-  if(r<.043)return {type:"REG",symbols:["R7","R7","B7"]};
+  if(r<.043)return {type:"REG",symbols:Math.random()<.5?["R7","R7","B7"]:["B7","B7","R7"]};
   if(r<.093)return {type:"AZU",symbols:["AZU","AZU","AZU"]};
-  if(r<.16)return {type:"SEED",symbols:["SEED","SEED","SEED"]};
-  if(r<.22)return {type:"CHERRY3",symbols:["CHERRY","CHERRY","CHERRY"]};
+  if(r<.16)return {type:"LOTAD",symbols:["LOTAD","LOTAD","LOTAD"]};
+  if(r<.22)return {type:"CHERRY",symbols:["CHERRY",rnd(SYMBOLS),rnd(SYMBOLS)]};
   if(r<.29)return {type:"REPLAY",symbols:["REPLAY","REPLAY","REPLAY"]};
   if(r<.35)return {type:"POWER",symbols:["POWER","POWER","POWER"]};
   return {type:"MISS",symbols:[rnd(SYMBOLS),rnd(SYMBOLS),rnd(SYMBOLS)]};
@@ -148,8 +222,8 @@ async function resolveOutcome(){
   if(o.type==="BIG"){won=300;text="🎉 BIG BONUS！ 同色777！ +300";bd=0;flashWin()}
   else if(o.type==="REG"){won=90;text="✨ REG BONUS！ 右リール色違い7！ +90";flashWin()}
   else if(o.type==="AZU"){won=12;text="ルリリ役！ +12";flashWin()}
-  else if(o.type==="SEED"){won=6;text="タネ役！ +6";flashWin()}
-  else if(o.type==="CHERRY3"){won=6;text="チェリー3つ！ +6"}
+  else if(o.type==="LOTAD"){won=6;text="ハスボー役！ +6";flashWin()}
+  else if(o.type==="CHERRY"){won=2;text="チェリー！ +2"}
   else if(o.type==="REPLAY"){won=4;replay=true;text="REPLAY！ +4 ＆ もう一回"}
   else if(o.type==="POWER"){won=3;power=Math.min(16,power+1);text="⚡ POWER！ +3 / ゲージ+1"}
   else text="はずれ。次のSPINへ！";

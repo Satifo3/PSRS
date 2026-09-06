@@ -45,3 +45,13 @@ linear-gradient(#efa83d,#d78028 55%,#bf6622)}
 .replay-art{width:64px;height:42px;border:5px solid #4a5e91;background:#d6e1ff;display:grid;place-items:center;color:#35446e;font-size:12px;font-weight:900}
 .power-art{font-size:48px;color:#ffe63c;-webkit-text-stroke:3px #65480b;text-shadow:0 0 6px #fff}
 @media(max-width:430px){.reels-frame{height:300px}.reel-cell{height:94px}.winning-line.line-top{top:50px}.winning-line.line-mid{top:149px}.winning-line.line-bot{top:248px}.paylines{height:300px}.reel-cell .art,.symbol{transform:scale(.88)}}
+
+/* v0.2 reference-symbol polish */
+.slot-svg{width:82px;height:70px;overflow:visible}
+.reel-cell .art{filter:drop-shadow(1px 2px 0 rgba(90,70,45,.5))}
+.symbol-sm.lotad{background:#74aa41;color:#233418}
+.reference-note{
+  margin-top:10px;padding:9px 10px;background:#233c40;color:#fff0bb;
+  border:3px solid #102a2d;border-radius:5px;display:grid;gap:3px;font-size:9px
+}
+.reference-note b{color:#ffdf67;letter-spacing:.08em}
